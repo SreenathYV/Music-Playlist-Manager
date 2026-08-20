@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Summer Training Report - Music Playlist Manager</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm 20mm 20mm 20mm;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 12pt;
+      line-height: 1.6;
+      color: #111;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+    }
+    .page {
+      page-break-after: always;
+      min-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      position: relative;
+    }
+    .page:last-child {
+      page-break-after: avoid;
+    }
+    .cover-page {
+      text-align: center;
+      justify-content: space-between;
+      padding: 30px 10px;
+    }
+    .cover-title-main {
+      font-size: 18pt;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      margin-top: 10px;
+      text-transform: uppercase;
+    }
+    .cover-term {
+      font-size: 14pt;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    .cover-project-title {
+      font-size: 20pt;
+      font-weight: bold;
+      margin: 40px 0;
+      color: #0b2545;
+    }
+    .logo-box {
+      border: 2px solid #333;
+      padding: 14px 28px;
+      display: inline-block;
+      margin: 25px auto;
+      font-family: 'Arial', sans-serif;
+    }
+    .logo-lpu {
+      font-size: 20pt;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #d9531e;
+    }
+    .logo-sub {
+      font-size: 10pt;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #333;
+      margin-top: 3px;
+    }
+    .section-title {
+      font-size: 16pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 25px;
+      margin-top: 10px;
+      border-bottom: 1.5px solid #222;
+      padding-bottom: 6px;
+    }
+    h2 {
+      font-size: 14pt;
+      font-weight: bold;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      color: #111;
+    }
+    h3 {
+      font-size: 12pt;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 8px;
+    }
+    p {
+      text-align: justify;
+      margin-bottom: 12px;
+      text-indent: 0;
+    }
+    ul, ol {
+      margin-top: 4px;
+      margin-bottom: 14px;
+      padding-left: 28px;
+    }
+    li {
+      margin-bottom: 6px;
+      text-align: justify;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 11pt;
+    }
+    table, th, td {
+      border: 1px solid #333;
+    }
+    th {
+      background-color: #f2f2f2;
+      padding: 8px 10px;
+      font-weight: bold;
+      text-align: left;
+    }
+    td {
+      padding: 7px 10px;
+      vertical-align: top;
+    }
+    .code-block {
+      background-color: #f8f9fa;
+      border: 1px solid #e1e4e8;
+      border-radius: 4px;
+      padding: 12px 14px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 9.5pt;
+      line-height: 1.45;
+      overflow-x: auto;
+      margin: 12px 0;
+      white-space: pre-wrap;
+    }
+    .diagram-box {
+      background: #fafafa;
+      border: 1px solid #ccc;
+      padding: 12px;
+      font-family: 'Consolas', monospace;
+      font-size: 10pt;
+      text-align: center;
+      margin: 14px 0;
+      white-space: pre;
+    }
+    .sign-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+    }
+    .sign-box {
+      font-size: 11pt;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= PAGE 1: COVER PAGE ================= -->
+  <div class="page cover-page">
+    <div>
+      <div class="cover-title-main">SUMMER TRAINING/INTERNSHIP REPORT</div>
+      <div class="cover-term">(Term Aug-Dec 2026)</div>
+    </div>
+
+    <div>
+      <div class="cover-project-title">Music Playlist Manager Using Doubly Linked List</div>
+      
+      <div class="logo-box">
+        <div class="logo-lpu">LOVELY PROFESSIONAL UNIVERSITY</div>
+        <div class="logo-sub">Transforming Education, Transforming India</div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size: 13pt; font-weight: bold; margin-bottom: 5px;">Submitted by</div>
+      <div style="font-size: 12pt; font-weight: bold;">Name of Student : Gudhi Venkata Thulasi Ram</div>
+      <div style="font-size: 12pt; font-weight: bold;">Registration Number : 12409081</div>
+    </div>
+
+    <div>
+      <div style="font-size: 13pt; font-weight: bold; margin-bottom: 5px;">Under the Guidance of</div>
+      <div style="font-size: 12pt; font-weight: bold;">Dr. Nikita (UID: 31943)</div>
+      <div style="font-size: 12pt; font-weight: bold;">Dr. Jimmy Singla (UID: 31874)</div>
+    </div>
+
+    <div style="font-size: 14pt; font-weight: bold; margin-top: 15px;">
+      School of Computer Science and Engineering
+    </div>
+  </div>
+
+  <!-- ================= PAGE 2: DECLARATION ================= -->
+  <div class="page">
+    <div class="section-title">DECLARATION</div>
+    <p>
+      I hereby declare that the Summer Training/Internship Report entitled <strong>"Music Playlist Manager Using Doubly Linked List"</strong> submitted in partial fulfilment of the requirements for the award of the degree of <strong>Bachelor of Technology in Computer Science and Engineering</strong> at <strong>Lovely Professional University</strong> is my original work.
+    </p>
+    <p>
+      This project has been carried out by me during the Summer Training/Internship under the guidance of <strong>Dr. Jimmy Singla</strong> and <strong>Dr. Nikita</strong>. The work presented in this report has not been submitted previously, either in whole or in part, for the award of any degree, diploma, or any other academic qualification at this or any other University or Institution. I further declare that all the information, data, and references used in this report have been properly acknowledged and cited wherever required.
+    </p>
+
+    <div style="margin-top: 60px;">
+      <p><strong>Date:</strong> 20/08/2026</p>
+      <p><strong>Place:</strong> Phagwara, Punjab</p>
+      <br><br>
+      <p><strong>Name:</strong> GUDHI VENKATA THULASIRAM</p>
+      <p><strong>Registration Number:</strong> 12409081</p>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 3: CERTIFICATE ================= -->
+  <div class="page">
+    <div class="section-title">CERTIFICATE</div>
+    <p>
+      This is to certify that the Summer Training/Internship Report entitled <strong>"Music Playlist Manager Using Doubly Linked List"</strong> submitted by <strong>Gudhi Venkata Thulasi Ram (Registration No. 12409081)</strong> in partial fulfilment of the requirements for the award of the degree of <strong>Bachelor of Technology in Computer Science and Engineering</strong> at <strong>Lovely Professional University</strong> is a Bonafide record of the work carried out by the student under our guidance and supervision during the Summer Training/Internship.
+    </p>
+
+    <div style="margin-top: 80px;">
+      <div class="sign-row">
+        <div class="sign-box">
+          <strong>Project Guides:</strong><br><br>
+          <strong>Dr. Jimmy Singla</strong> (UID: 31874)<br>
+          School of Computer Science and Engineering<br>
+          Lovely Professional University
+        </div>
+        <div class="sign-box" style="text-align: right;">
+          <br><br>
+          <strong>Dr. Nikita</strong> (UID: 31943)<br>
+          School of Computer Science and Engineering<br>
+          Lovely Professional University
+        </div>
+      </div>
+      <div style="margin-top: 40px;">
+        <strong>Date:</strong> 20/08/2026
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 4: ACKNOWLEDGEMENT ================= -->
+  <div class="page">
+    <div class="section-title">ACKNOWLEDGEMENT</div>
+    <p>
+      I would like to express my sincere gratitude to <strong>Lovely Professional University</strong> for providing me with the opportunity to undertake this Summer Training/Internship and successfully complete my project titled <strong>"Music Playlist Manager Using Doubly Linked List."</strong>
+    </p>
+    <p>
+      I am deeply thankful to my project guides, <strong>Dr. Jimmy Singla</strong> and <strong>Dr. Nikita</strong>, for their valuable guidance, continuous encouragement, constructive suggestions, and constant support throughout the development of this project. Their expertise and motivation greatly contributed to the successful completion of this work.
+    </p>
+    <p>
+      I also extend my heartfelt thanks to all the faculty members of the <strong>Department of Computer Science and Engineering</strong> for providing the necessary resources, knowledge, and academic environment required for completing this project successfully.
+    </p>
+    <p>
+      Finally, I express my sincere gratitude to my parents, family members, and friends for their continuous encouragement, moral support, and motivation throughout the duration of this project. Their support has been a constant source of inspiration in achieving this milestone.
+    </p>
+
+    <div style="margin-top: 80px; text-align: right;">
+      <p><strong>GUDHI VENKATA THULASIRAM</strong></p>
+      <p><strong>Registration No.:</strong> 12409081</p>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 5: TABLE OF CONTENTS ================= -->
+  <div class="page">
+    <div class="section-title">TABLE OF CONTENTS</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 12%; text-align: center;">S.NO.</th>
+          <th style="width: 73%;">TOPIC</th>
+          <th style="width: 15%; text-align: center;">Page No.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="text-align: center;">*</td><td>DECLARATION</td><td style="text-align: center;">2</td></tr>
+        <tr><td style="text-align: center;">*</td><td>CERTIFICATE</td><td style="text-align: center;">3</td></tr>
+        <tr><td style="text-align: center;">*</td><td>ACKNOWLEDGEMENT</td><td style="text-align: center;">4</td></tr>
+        <tr><td style="text-align: center;">1.</td><td>INTRODUCTION OF ORGANISATION</td><td style="text-align: center;">6-7</td></tr>
+        <tr><td style="text-align: center;">2.</td><td>SUMMER TRAINING COURSE / INTERNSHIP CONTENT DETAIL</td><td style="text-align: center;">8-9</td></tr>
+        <tr><td style="text-align: center;">3.</td><td>ABSTRACT</td><td style="text-align: center;">9</td></tr>
+        <tr><td style="text-align: center;">4.</td><td>INTRODUCTION</td><td style="text-align: center;">9-11</td></tr>
+        <tr><td style="text-align: center;">5.</td><td>PROBLEM STATEMENT</td><td style="text-align: center;">11</td></tr>
+        <tr><td style="text-align: center;">6.</td><td>LITERATURE REVIEW & CONCEPTUAL FOUNDATION</td><td style="text-align: center;">11-12</td></tr>
+        <tr><td style="text-align: center;">7.</td><td>SYSTEM ARCHITECTURE & NODE STRUCTURE</td><td style="text-align: center;">12-13</td></tr>
+        <tr><td style="text-align: center;">8.</td><td>ALGORITHM DESIGN & CORE OPERATIONS</td><td style="text-align: center;">13-14</td></tr>
+        <tr><td style="text-align: center;">9.</td><td>IMPLEMENTATION & OBJECT-ORIENTED DESIGN</td><td style="text-align: center;">14-15</td></tr>
+        <tr><td style="text-align: center;">10.</td><td>INTERACTIVE VISUALIZATION & WEB INTERFACE</td><td style="text-align: center;">15</td></tr>
+        <tr><td style="text-align: center;">11.</td><td>TIME & SPACE COMPLEXITY ANALYSIS</td><td style="text-align: center;">16-17</td></tr>
+        <tr><td style="text-align: center;">12.</td><td>TECHNOLOGIES USED</td><td style="text-align: center;">17</td></tr>
+        <tr><td style="text-align: center;">13.</td><td>DATA FLOW DIAGRAM</td><td style="text-align: center;">18</td></tr>
+        <tr><td style="text-align: center;">14.</td><td>RESULTS & DISCUSSION</td><td style="text-align: center;">18-19</td></tr>
+        <tr><td style="text-align: center;">15.</td><td>SOURCE CODE & SCREENSHOTS</td><td style="text-align: center;">19-24</td></tr>
+        <tr><td style="text-align: center;">16.</td><td>CONCLUSION</td><td style="text-align: center;">25</td></tr>
+        <tr><td style="text-align: center;">17.</td><td>FUTURE SCOPE</td><td style="text-align: center;">25-26</td></tr>
+        <tr><td style="text-align: center;">18.</td><td>BIBLIOGRAPHY</td><td style="text-align: center;">26</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================= PAGE 6: INTRODUCTION OF ORGANIZATION ================= -->
+  <div class="page">
+    <div class="section-title">1. INTRODUCTION OF ORGANIZATION</div>
+    <p>
+      <strong>Lovely Professional University (LPU)</strong> is one of India’s leading private universities, located in Phagwara, Punjab. Established in 2005 under the Lovely Professional University Act, the university offers undergraduate, postgraduate, doctoral, and diploma programs across various disciplines including Engineering, Management, Computer Applications, Agriculture, Design, Law, Pharmacy, and Sciences. The university is recognized for providing quality education through modern teaching methodologies, advanced infrastructure, experienced faculty members, and strong industry collaborations.
+    </p>
+    <p>
+      <strong>The School of Computer Science and Engineering (SCSE)</strong> at Lovely Professional University focuses on providing high-quality education in emerging technologies such as Data Structures and Algorithms, Software Engineering, Artificial Intelligence, Machine Learning, Data Science, Cyber Security, Cloud Computing, and Full-Stack Application Development. The curriculum combines theoretical knowledge with practical implementation through laboratory sessions, industry-oriented projects, workshops, hackathons, internships, and certification programs. This approach enables students to develop strong technical and problem-solving skills required in today’s technology-driven world.
+    </p>
+    <p>
+      As a part of its academic excellence, Lovely Professional University conducts <strong>Summer Training and Internship Programs</strong> to bridge the gap between classroom learning and industrial requirements. These programs provide students with practical exposure to modern technologies, programming languages, software development tools, and real-world applications. Students gain valuable hands-on experience by working on live projects under the guidance of experienced faculty members and industry professionals.
+    </p>
+    <p>
+      The university also encourages innovation, entrepreneurship, research, and continuous learning through various research centers, innovation labs, startup incubation facilities, national and international collaborations, and technical events. Such initiatives help students enhance their technical expertise, communication skills, teamwork, leadership qualities, and professional ethics, preparing them for successful careers in Computer Science and Engineering.
+    </p>
+    <p>
+      The Summer Training program provided an excellent opportunity to enhance practical knowledge in <strong>Data Structures, Dynamic Memory Management, and Object-Oriented C++ Programming</strong> by developing the project <strong>“Music Playlist Manager Using Doubly Linked List.”</strong> The project allowed the application of fundamental theoretical data structure concepts to solve a real-world software design problem, thereby strengthening foundational algorithmic skills and modern application engineering.
+    </p>
+
+    <h2>OBJECTIVES OF THE TRAINING</h2>
+    <ul>
+      <li>To master the fundamentals of Data Structures and Algorithms (DSA) using C++.</li>
+      <li>To learn dynamic memory allocation and deallocation (<code>new</code> and <code>delete</code>) and pointer manipulation.</li>
+      <li>To analyze the trade-offs between contiguous memory structures (arrays) and linked memory structures.</li>
+      <li>To design and implement a Doubly Linked List (DLL) with constant-time bidirectional operations.</li>
+      <li>To develop a complete, modular, menu-driven Music Playlist Manager in C++.</li>
+      <li>To build an interactive web-based visualizer using HTML5, CSS3, and JavaScript.</li>
+      <li>To evaluate time and space complexity across all fundamental operations.</li>
+    </ul>
+
+    <h2>DURATION AND MODE OF TRAINING</h2>
+    <p>
+      The Summer Training Program titled <strong>“Data Structures, Algorithms & Modern Application Development”</strong> was conducted by the School of Computer Science and Engineering, Lovely Professional University during the summer semester. The training was delivered through a combination of theoretical sessions, practical laboratory exercises, coding assignments, and project-based learning.
+    </p>
+  </div>
+
+  <!-- ================= PAGE 7: COURSE CONTENT & ABSTRACT ================= -->
+  <div class="page">
+    <div class="section-title">2. SUMMER TRAINING CONTENT DETAIL</div>
+    <p>
+      During the Summer Training Program, fundamental and advanced concepts of Data Structures, Algorithms, and Software Engineering were studied both theoretically and practically. The training was organized into five comprehensive modules:
+    </p>
+    <p><strong>Module 1: Foundations of C++ and Memory Management</strong><br>
+      Object-Oriented Programming principles, pointers, reference variables, stack vs heap allocation, dynamic memory management (<code>new</code>/<code>delete</code>), and prevention of memory leaks.
+    </p>
+    <p><strong>Module 2: Linear Data Structures & Singly Linked Lists</strong><br>
+      Contiguous arrays vs linked structures, Node structure, head/tail insertion, deletion, and forward traversal limitations.
+    </p>
+    <p><strong>Module 3: Doubly Linked Lists & Bidirectional Traversal</strong><br>
+      Two-way pointer manipulation (<code>next</code> and <code>prev</code>), constant-time $O(1)$ operations with dedicated state pointers, boundary condition handling, and safe node reclamation.
+    </p>
+    <p><strong>Module 4: Algorithm Analysis & Complexity Theory</strong><br>
+      Asymptotic Big-O analysis, comparative benchmarking of arrays, singly linked lists, and doubly linked lists, and auxiliary memory overhead.
+    </p>
+    <p><strong>Module 5: Interactive Visualization & Full-Stack UI</strong><br>
+      Translating algorithmic pointer mechanics into visual DOM representations using HTML5, CSS3, and modern JavaScript.
+    </p>
+
+    <div class="section-title" style="margin-top: 30px;">3. ABSTRACT</div>
+    <p>
+      The <strong>Music Playlist Manager</strong> is a high-performance software application designed and implemented using a <strong>Doubly Linked List (DLL)</strong> data structure in <strong>C++</strong>, complemented by an interactive web-based visualizer. In modern digital audio streaming systems, efficient playlist navigation requires instant, seamless transitions between consecutive tracks in both forward (Next Track) and backward (Previous Track) directions, alongside dynamic insertions and deletions without the costly memory reallocation penalties associated with array-based storage.
+    </p>
+    <p>
+      The core engine is implemented in object-oriented C++, encapsulating a custom <code>Node</code> structure (storing song title, artist name, duration in seconds, and bidirectional pointers) and a <code>Playlist</code> controller class managing <code>head</code>, <code>tail</code>, and <code>current</code> playing track references. The system supports eight core operations: <strong>Add Song ($O(1)$)</strong>, <strong>Delete Song ($O(n)$ search, $O(1)$ unlinking)</strong>, <strong>Play Next Track ($O(1)$)</strong>, <strong>Play Previous Track ($O(1)$)</strong>, <strong>Display Forward ($O(n)$)</strong>, <strong>Display Reverse ($O(n)$)</strong>, <strong>Search Track ($O(n)$)</strong>, and <strong>Play Specific Track ($O(n)$)</strong>.
+    </p>
+    <p>
+      To provide enhanced conceptual clarity and user engagement, a synchronized graphical interface was built using HTML5, CSS3, and modern JavaScript, dynamically rendering each node, its metadata, active playing state badges, and bidirectional pointer arrows. The project demonstrates the superiority of linked node architectures over static arrays for real-time media management.
+    </p>
+  </div>
+
+  <!-- ================= PAGE 8: INTRODUCTION & PROBLEM STATEMENT ================= -->
+  <div class="page">
+    <div class="section-title">4. INTRODUCTION</div>
+    <p>
+      Music and multimedia streaming applications (such as Spotify, Apple Music, and YouTube Music) represent some of the most widely used software systems today. At the core of every media player is a <strong>Playlist Management Engine</strong> responsible for queuing songs, navigating tracks, inserting user-selected items, and maintaining the current playback state.
+    </p>
+    <p>
+      From a computer science perspective, selecting the appropriate data structure for managing an ordered sequence of tracks with active navigation is critical. While beginner implementations frequently use arrays or dynamic arrays (such as <code>std::vector</code>), these structures suffer from severe algorithmic inefficiencies when inserting or removing elements in the middle of a playlist due to mandatory element-shifting operations ($O(n)$).
+    </p>
+    
+    <h2>4.1 Background of Music Playlists & Linear Data Structures</h2>
+    <p>
+      Linear data structures store elements sequentially. The two primary paradigms are contiguous memory (arrays) and linked memory (linked lists). In a <strong>Doubly Linked List</strong>, each node contains references to both its adjacent neighbors, enabling two-way movement without re-traversal from the start.
+    </p>
+
+    <h2>4.2 Existing Playlist Management Systems & Limitations</h2>
+    <ul>
+      <li><strong>Inefficient Backward Navigation:</strong> Singly linked lists cannot move backward without re-scanning from the head ($O(n)$ time per click).</li>
+      <li><strong>High Insertion/Deletion Overhead in Arrays:</strong> Deleting or inserting tracks in array-based playlists requires shifting all subsequent elements ($O(n)$ memory shifts).</li>
+      <li><strong>Memory Inflexibility:</strong> Static arrays have fixed capacities, leading to memory waste or buffer overflow errors.</li>
+      <li><strong>Lack of Real-Time State Tracking:</strong> Many simple systems lack dedicated <code>current</code> and <code>tail</code> pointers, requiring repetitive traversals.</li>
+    </ul>
+
+    <div class="section-title" style="margin-top: 30px;">5. PROBLEM STATEMENT</div>
+    <p>
+      Modern audio playback engines require an underlying data structure capable of:
+    </p>
+    <ol>
+      <li>Instantaneous switching to the next track ($O(1)$ time complexity).</li>
+      <li>Instantaneous switching to the previous track ($O(1)$ time complexity).</li>
+      <li>Dynamic addition of new tracks at the end in constant time ($O(1)$) without array resizing overhead.</li>
+      <li>Seamless removal of any track by name, safely rewiring adjacent pointers and releasing allocated memory without memory leaks.</li>
+      <li>Complete bidirectional traversal capability (Forward: Top-to-Bottom; Reverse: Bottom-to-Top).</li>
+    </ol>
+  </div>
+
+  <!-- ================= PAGE 9: SYSTEM ARCHITECTURE & ALGORITHMS ================= -->
+  <div class="page">
+    <div class="section-title">6. SYSTEM ARCHITECTURE & NODE DESIGN</div>
+    <div class="diagram-box">
+NULL &lt;--- [prev | Song 1 | next] &lt;=====&gt; [prev | Song 2 | next] &lt;---&gt; [prev | Song 3 | next] ---&gt; NULL
+                  ^                                                           ^
+                (head)                                                      (tail)
+    </div>
+
+    <h2>Table 6.1: Node Attributes & Description</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Data Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>title</code></td>
+          <td><code>std::string</code></td>
+          <td>Title / Name of the song track.</td>
+        </tr>
+        <tr>
+          <td><code>artist</code></td>
+          <td><code>std::string</code></td>
+          <td>Performing artist or composer name.</td>
+        </tr>
+        <tr>
+          <td><code>duration</code></td>
+          <td><code>int</code></td>
+          <td>Length of the song in seconds (converted to mm:ss).</td>
+        </tr>
+        <tr>
+          <td><code>next</code></td>
+          <td><code>Node*</code></td>
+          <td>Pointer referencing the subsequent node in the playlist.</td>
+        </tr>
+        <tr>
+          <td><code>prev</code></td>
+          <td><code>Node*</code></td>
+          <td>Pointer referencing the preceding node in the playlist.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-title" style="margin-top: 25px;">7. ALGORITHM DESIGN & CORE OPERATIONS</div>
+    <p><strong>1. Add Song (Tail Insertion) — $O(1)$:</strong> Allocate <code>newNode</code>. If list empty, set <code>head = tail = current = newNode</code>. Otherwise, link <code>newNode->prev = tail</code>, <code>tail->next = newNode</code>, and update <code>tail = newNode</code>.</p>
+    <p><strong>2. Delete Song by Title — $O(n)$:</strong> Traverse to locate target node. Rewire <code>temp->prev->next = temp->next</code> and <code>temp->next->prev = temp->prev</code>. Handle head/tail updates. Reclaim memory with <code>delete temp</code>.</p>
+    <p><strong>3. Play Next / Previous — $O(1)$:</strong> Advance <code>current = current->next</code> or backtrack <code>current = current->prev</code> directly using stored pointers.</p>
+    <p><strong>4. Display Forward / Reverse — $O(n)$:</strong> Traverse using <code>next</code> pointer from <code>head</code>, or traverse backwards using <code>prev</code> pointer starting from <code>tail</code>.</p>
+  </div>
+
+  <!-- ================= PAGE 10: COMPLEXITY & TECHNOLOGIES ================= -->
+  <div class="page">
+    <div class="section-title">8. TIME & SPACE COMPLEXITY ANALYSIS</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Operation</th>
+          <th>Array / Vector</th>
+          <th>Singly Linked List</th>
+          <th><strong>Doubly Linked List (Our System)</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Add Song at End</strong></td>
+          <td>$O(1)$ / $O(n)$ resize</td>
+          <td>$O(1)$ (with tail)</td>
+          <td><strong>$O(1)$ (with tail)</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Play Next Track</strong></td>
+          <td>$O(1)$</td>
+          <td>$O(1)$</td>
+          <td><strong>$O(1)$</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Play Previous Track</strong></td>
+          <td>$O(1)$</td>
+          <td>$O(n)$ (requires head traversal)</td>
+          <td><strong>$O(1)$ (via <code>prev</code> pointer)</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Delete Current Song</strong></td>
+          <td>$O(n)$ (shifts elements)</td>
+          <td>$O(n)$ (find predecessor)</td>
+          <td><strong>$O(1)$ (given pointer)</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Delete Song by Title</strong></td>
+          <td>$O(n)$</td>
+          <td>$O(n)$</td>
+          <td><strong>$O(n)$ search + $O(1)$ unlink</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Reverse Traversal</strong></td>
+          <td>$O(n)$</td>
+          <td>Requires auxiliary stack $O(n)$</td>
+          <td><strong>$O(n)$ directly via <code>tail</code> & <code>prev</code></strong></td>
+        </tr>
+        <tr>
+          <td><strong>Auxiliary Memory / Node</strong></td>
+          <td>0 pointers</td>
+          <td>1 pointer (<code>next</code>)</td>
+          <td><strong>2 pointers (<code>next</code>, <code>prev</code>)</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-title" style="margin-top: 25px;">9. TECHNOLOGIES USED</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Technology</th>
+          <th>Version</th>
+          <th>Purpose in This Project</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>C++</strong></td>
+          <td>C++17 / C++20</td>
+          <td>Core language for Doubly Linked List implementation and CLI logic</td>
+        </tr>
+        <tr>
+          <td><strong>GCC / G++</strong></td>
+          <td>13.0+ / MinGW</td>
+          <td>Compiler used for building and executing the native binary</td>
+        </tr>
+        <tr>
+          <td><strong>HTML5 & CSS3</strong></td>
+          <td>Modern Standard</td>
+          <td>Interactive visualizer interface and custom styling</td>
+        </tr>
+        <tr>
+          <td><strong>JavaScript (ES6+)</strong></td>
+          <td>Modern Standard</td>
+          <td>Dynamic DOM rendering and real-time pointer state management</td>
+        </tr>
+        <tr>
+          <td><strong>VS Code / Antigravity IDE</strong></td>
+          <td>Latest</td>
+          <td>Integrated development and debugging environment</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================= PAGE 11: SOURCE CODE ================= -->
+  <div class="page">
+    <div class="section-title">10. SOURCE CODE & IMPLEMENTATION</div>
+    <div class="code-block">
+// Doubly Linked List Node & Core Operations in C++
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+struct Node {
+    string title;
+    string artist;
+    int duration;
+    Node* next;
+    Node* prev;
+
+    Node(string t, string a, int d) {
+        title = t;
+        artist = a;
+        duration = d;
+        next = NULL;
+        prev = NULL;
+    }
+};
+
+class Playlist {
+private:
+    Node* head;
+    Node* tail;
+    Node* current;
+    int count;
+
+public:
+    Playlist() : head(NULL), tail(NULL), current(NULL), count(0) {}
+
+    void addSong(string title, string artist, int duration) {
+        Node* newNode = new Node(title, artist, duration);
+        if (head == NULL) {
+            head = tail = current = newNode;
+        } else {
+            newNode->prev = tail;
+            tail->next = newNode;
+            tail = newNode;
+        }
+        count++;
+        cout &lt;&lt; "\n  [+] Added: \"" &lt;&lt; title &lt;&lt; "\" by " &lt;&lt; artist &lt;&lt; endl;
+    }
+
+    void playNext() {
+        if (current == NULL) return;
+        if (current->next == NULL) {
+            cout &lt;&lt; "\n  [!] This is the LAST song in the playlist!" &lt;&lt; endl;
+            return;
+        }
+        current = current->next;
+        cout &lt;&lt; "\n  [&gt;&gt;] Now Playing: \"" &lt;&lt; current->title &lt;&lt; "\" by " &lt;&lt; current->artist &lt;&lt; endl;
+    }
+
+    void playPrev() {
+        if (current == NULL) return;
+        if (current->prev == NULL) {
+            cout &lt;&lt; "\n  [!] This is the FIRST song in the playlist!" &lt;&lt; endl;
+            return;
+        }
+        current = current->prev;
+        cout &lt;&lt; "\n  [&lt;&lt;] Now Playing: \"" &lt;&lt; current->title &lt;&lt; "\" by " &lt;&lt; current->artist &lt;&lt; endl;
+    }
+
+    ~Playlist() {
+        Node* temp = head;
+        while (temp != NULL) {
+            Node* nextNode = temp->next;
+            delete temp;
+            temp = nextNode;
+        }
+    }
+};
+    </div>
+  </div>
+
+  <!-- ================= PAGE 12: RESULTS & CONCLUSION ================= -->
+  <div class="page">
+    <div class="section-title">11. RESULTS & EXPERIMENTAL VERIFICATION</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Test Case</th>
+          <th>Scenario</th>
+          <th>Expected Outcome</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>TC-01</td><td>Add to empty list</td><td>Head, tail, current set to node</td><td>PASS</td></tr>
+        <tr><td>TC-02</td><td>Sequential additions</td><td>Appended at tail in $O(1)$</td><td>PASS</td></tr>
+        <tr><td>TC-03</td><td>Play Next on tail</td><td>Warning message displayed</td><td>PASS</td></tr>
+        <tr><td>TC-04</td><td>Play Prev on head</td><td>Warning message displayed</td><td>PASS</td></tr>
+        <tr><td>TC-05</td><td>Delete middle song</td><td>Pointers re-linked seamlessly</td><td>PASS</td></tr>
+        <tr><td>TC-06</td><td>Reverse traversal</td><td>Displays songs from tail to head</td><td>PASS</td></tr>
+        <tr><td>TC-07</td><td>Memory cleanup</td><td>Destructor frees all heap nodes</td><td>PASS</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-title" style="margin-top: 25px;">12. CONCLUSION & FUTURE SCOPE</div>
+    <p>
+      The <strong>Music Playlist Manager</strong> successfully implements a high-performance Doubly Linked List in C++. The project proves the algorithmic superiority of DLLs for bidirectional media streaming controls with constant-time $O(1)$ transitions and dynamic memory handling.
+    </p>
+    <p><strong>Future Enhancements:</strong></p>
+    <ul>
+      <li><strong>Circular DLL:</strong> Connecting <code>tail->next</code> to <code>head</code> for continuous repeat mode.</li>
+      <li><strong>Shuffle Feature:</strong> Implementing Fisher-Yates randomization on linked nodes.</li>
+      <li><strong>Persistent Storage:</strong> Saving playlists to JSON / SQLite databases.</li>
+      <li><strong>Audio Decoding:</strong> Integrating SDL2 / SFML for real audio playback.</li>
+    </ul>
+
+    <div class="section-title" style="margin-top: 25px;">13. BIBLIOGRAPHY</div>
+    <ol>
+      <li>Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2009). <em>Introduction to Algorithms</em> (3rd ed.). MIT Press.</li>
+      <li>Stroustrup, B. (2013). <em>The C++ Programming Language</em> (4th ed.). Addison-Wesley Professional.</li>
+      <li>Knuth, D. E. (1997). <em>The Art of Computer Programming, Volume 1: Fundamental Algorithms</em> (3rd ed.). Addison-Wesley.</li>
+      <li>Lovely Professional University. <em>School of Computer Science & Engineering Academic Guidelines</em>. https://www.lpu.in/</li>
+    </ol>
+  </div>
+
+</body>
+</html>

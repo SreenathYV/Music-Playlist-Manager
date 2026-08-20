@@ -1,0 +1,420 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Music Playlist Manager — Doubly Linked List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f5f5f0; --surface: #ffffff; --border: #e2e2dc; --text: #1a1a1a;
+      --muted: #6b6b6b; --accent: #3b6ea5; --accent-light: #eaf0f8;
+      --accent-hover: #2d5a8e; --success: #2e7d4f; --success-bg: #edf7f0;
+      --danger: #b03a2e; --danger-bg: #fdf0ee; --warning: #7d5a0a; --warning-bg: #fdf6e3;
+      --node-border: #c8cdd5; --shadow: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 28px; display: flex; align-items: center; gap: 14px; }
+    .header-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; }
+    header h1 { font-size: 17px; font-weight: 600; }
+    header p { font-size: 12px; color: var(--muted); margin-top: 1px; }
+    .badge { margin-left: auto; background: var(--accent-light); color: var(--accent); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+    .main { display: grid; grid-template-columns: 290px 1fr; gap: 18px; padding: 22px 26px; max-width: 1280px; margin: 0 auto; }
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+    .panel-header { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.4px; text-transform: uppercase; }
+    .panel-body { padding: 16px; }
+    .form-group { margin-bottom: 10px; }
+    label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 4px; }
+    input[type="text"], input[type="number"] { width: 100%; padding: 8px 11px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 13px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
+    input:focus { border-color: var(--accent); background: #fff; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: none; border-radius: 6px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s, transform 0.1s; }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--accent); color: #fff; width: 100%; justify-content: center; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-danger { background: var(--danger-bg); color: var(--danger); width: 100%; justify-content: center; }
+    .btn-danger:hover { background: #f5ddd9; }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 7px 12px; font-size: 12px; }
+    .btn-ghost:hover { background: var(--bg); color: var(--text); }
+    .ops-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 14px; }
+    .op-btn { padding: 9px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text); display: flex; align-items: center; gap: 6px; transition: all 0.15s; }
+    .op-btn:hover, .op-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+    .op-btn.active { font-weight: 600; }
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+    .right-col { display: flex; flex-direction: column; gap: 14px; }
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; text-align: center; box-shadow: var(--shadow); }
+    .stat-num { font-size: 22px; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .now-playing { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow); }
+    .np-icon { width: 42px; height: 42px; background: var(--accent-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .np-info { flex: 1; min-width: 0; }
+    .np-title { font-size: 14px; font-weight: 600; }
+    .np-artist { font-size: 12px; color: var(--muted); }
+    .np-controls { display: flex; gap: 8px; }
+    .np-btn { width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    .np-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+    .viz-area { min-height: 150px; padding: 22px 14px; display: flex; align-items: center; overflow-x: auto; gap: 0; }
+    .empty-state { width: 100%; text-align: center; color: var(--muted); font-size: 13px; }
+    .empty-icon { font-size: 30px; margin-bottom: 8px; }
+    .node-wrapper { display: flex; align-items: center; flex-shrink: 0; animation: nodeIn 0.3s ease; }
+    @keyframes nodeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+    .node-card { width: 108px; border: 1.5px solid var(--node-border); border-radius: 8px; background: #fff; padding: 10px 9px 8px; text-align: center; position: relative; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; }
+    .node-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .node-card.current { border-color: var(--accent); background: var(--accent-light); box-shadow: 0 0 0 3px rgba(59,110,165,0.12); }
+    .node-idx { font-size: 10px; color: var(--muted); font-weight: 500; margin-bottom: 3px; }
+    .node-title { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .node-artist { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+    .node-dur { font-size: 10px; color: var(--muted); margin-top: 4px; }
+    .node-playing-badge { display: none; position: absolute; top: -8px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
+    .node-card.current .node-playing-badge { display: block; }
+    .arrow { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 0 3px; flex-shrink: 0; }
+    .arrow-line { font-size: 15px; color: var(--muted); line-height: 1; }
+    .null-label { font-size: 10px; font-weight: 600; color: #b0b0a8; padding: 0 5px; flex-shrink: 0; }
+    .log-list { display: flex; flex-direction: column; gap: 5px; max-height: 190px; overflow-y: auto; }
+    .log-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; border-radius: 6px; font-size: 12px; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    .log-item.success { background: var(--success-bg); color: var(--success); }
+    .log-item.danger  { background: var(--danger-bg); color: var(--danger); }
+    .log-item.info    { background: var(--accent-light); color: var(--accent); }
+    .log-item.warning { background: var(--warning-bg); color: var(--warning); }
+    .log-icon { font-size: 12px; flex-shrink: 0; }
+    .log-text { line-height: 1.4; }
+    .song-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .song-table th { text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); }
+    .song-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
+    .song-table tr:last-child td { border-bottom: none; }
+    .song-table tr.current-row td { background: var(--accent-light); color: var(--accent); font-weight: 500; }
+    .song-table tr:hover td { background: var(--bg); }
+    .song-table tr.current-row:hover td { background: var(--accent-light); }
+    .play-row-btn { background: none; border: none; cursor: pointer; font-size: 13px; padding: 2px 6px; border-radius: 4px; transition: background 0.15s; }
+    .play-row-btn:hover { background: var(--border); }
+    .divider { height: 1px; background: var(--border); margin: 12px 0; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    @media (max-width: 860px) { .main { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-icon">&#9835;</div>
+  <div>
+    <h1>Music Playlist Manager</h1>
+    <p>Data Structure: Doubly Linked List</p>
+  </div>
+  <span class="badge">DSA Project</span>
+</header>
+
+<div class="main">
+  <!-- Left Panel: Operations -->
+  <div>
+    <div class="panel">
+      <div class="panel-header">Operations</div>
+      <div class="panel-body">
+        <div class="ops-grid">
+          <button class="op-btn active" id="op-add"    onclick="switchOp('add')">    <span>+</span> Add Song</button>
+          <button class="op-btn"        id="op-delete" onclick="switchOp('delete')"> <span>x</span> Delete</button>
+          <button class="op-btn"        id="op-search" onclick="switchOp('search')"> <span>?</span> Search</button>
+          <button class="op-btn"        id="op-play"   onclick="switchOp('play')">   <span>&#9654;</span> Play Song</button>
+        </div>
+
+        <!-- Add -->
+        <div class="form-section active" id="form-add">
+          <div class="form-group"><label>Song Title</label><input type="text" id="add-title" placeholder="e.g. Blinding Lights"/></div>
+          <div class="form-group"><label>Artist Name</label><input type="text" id="add-artist" placeholder="e.g. The Weeknd"/></div>
+          <div class="form-group"><label>Duration (seconds)</label><input type="number" id="add-dur" placeholder="e.g. 200" min="1"/></div>
+          <button class="btn btn-primary" onclick="addSong()">+ Add to Playlist</button>
+        </div>
+
+        <!-- Delete -->
+        <div class="form-section" id="form-delete">
+          <div class="form-group"><label>Song Title to Delete</label><input type="text" id="del-title" placeholder="Enter exact title"/></div>
+          <button class="btn btn-danger" onclick="deleteSong()">Remove from Playlist</button>
+        </div>
+
+        <!-- Search -->
+        <div class="form-section" id="form-search">
+          <div class="form-group"><label>Song Title to Search</label><input type="text" id="search-title" placeholder="Enter song title"/></div>
+          <button class="btn btn-primary" onclick="searchSong()">Search</button>
+        </div>
+
+        <!-- Play Specific -->
+        <div class="form-section" id="form-play">
+          <div class="form-group"><label>Song Title to Play</label><input type="text" id="play-title" placeholder="Enter exact title"/></div>
+          <button class="btn btn-primary" onclick="playSpecific()">&#9654; Play Song</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px;">
+          <button class="btn btn-ghost" onclick="displayForward()">&#8595; Forward</button>
+          <button class="btn btn-ghost" onclick="displayReverse()">&#8593; Reverse</button>
+        </div>
+        <button class="btn btn-ghost" style="width:100%" onclick="clearLog()">Clear Log</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Viz + Table + Log -->
+  <div class="right-col">
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="stat-count">0</div><div class="stat-label">Total Songs</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-pos">--</div><div class="stat-label">Current Position</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-dur">0:00</div><div class="stat-label">Total Duration</div></div>
+    </div>
+
+    <div class="now-playing">
+      <div class="np-icon">&#127925;</div>
+      <div class="np-info">
+        <div class="np-title" id="np-title">No song playing</div>
+        <div class="np-artist" id="np-artist">Add songs to get started</div>
+      </div>
+      <div class="np-controls">
+        <button class="np-btn" title="Previous" onclick="playPrev()">&#9664;&#9664;</button>
+        <button class="np-btn" title="Next"     onclick="playNext()">&#9654;&#9654;</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>Doubly Linked List Visualization</span>
+        <span id="viz-label" style="font-weight:400;font-size:11px;color:var(--muted)">head &#8594; NULL</span>
+      </div>
+      <div class="viz-area" id="viz-area">
+        <div class="empty-state"><div class="empty-icon">&#127926;</div><div>Add songs to see the linked list</div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">Playlist Table</div>
+      <div id="table-container" style="padding:18px;text-align:center;color:var(--muted);font-size:13px;">No songs yet.</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">Operation Log</div>
+      <div class="panel-body">
+        <div class="log-list" id="log-list">
+          <div class="log-item info"><span class="log-icon">i</span><span class="log-text">Ready. Use the panel on the left to manage your playlist.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+class Node {
+  constructor(title, artist, duration) {
+    this.title = title; this.artist = artist; this.duration = parseInt(duration);
+    this.next = null; this.prev = null;
+  }
+}
+
+class Playlist {
+  constructor() { this.head = null; this.tail = null; this.current = null; this.count = 0; }
+
+  addSong(title, artist, duration) {
+    const n = new Node(title, artist, duration);
+    if (!this.head) { this.head = this.tail = this.current = n; }
+    else { n.prev = this.tail; this.tail.next = n; this.tail = n; }
+    this.count++;
+  }
+
+  deleteSong(title) {
+    if (!this.head) return { ok: false, msg: 'Playlist is empty.' };
+    let t = this.head;
+    while (t && t.title !== title) t = t.next;
+    if (!t) return { ok: false, msg: '"' + title + '" not found.' };
+    if (t.prev) t.prev.next = t.next; else this.head = t.next;
+    if (t.next) t.next.prev = t.prev; else this.tail = t.prev;
+    if (this.current === t) this.current = t.next || t.prev;
+    this.count--;
+    return { ok: true, msg: 'Deleted "' + title + '" successfully.' };
+  }
+
+  playNext() {
+    if (!this.current) return { ok: false, msg: 'No song is playing.' };
+    if (!this.current.next) return { ok: false, msg: 'This is the last song!' };
+    this.current = this.current.next;
+    return { ok: true, msg: 'Now playing: "' + this.current.title + '" by ' + this.current.artist };
+  }
+
+  playPrev() {
+    if (!this.current) return { ok: false, msg: 'No song is playing.' };
+    if (!this.current.prev) return { ok: false, msg: 'This is the first song!' };
+    this.current = this.current.prev;
+    return { ok: true, msg: 'Now playing: "' + this.current.title + '" by ' + this.current.artist };
+  }
+
+  searchSong(title) {
+    let t = this.head, pos = 1;
+    while (t) {
+      if (t.title === title) return { ok: true, msg: 'Found "' + title + '" at position ' + pos + ' of ' + this.count + '. Artist: ' + t.artist + ', Duration: ' + fmt(t.duration), node: t, pos };
+      t = t.next; pos++;
+    }
+    return { ok: false, msg: '"' + title + '" not found.' };
+  }
+
+  playSong(title) {
+    let t = this.head;
+    while (t) {
+      if (t.title === title) { this.current = t; return { ok: true, msg: 'Now playing: "' + t.title + '" by ' + t.artist }; }
+      t = t.next;
+    }
+    return { ok: false, msg: '"' + title + '" not found.' };
+  }
+
+  toArray() { const a = []; let t = this.head; while (t) { a.push(t); t = t.next; } return a; }
+  toArrayReverse() { const a = []; let t = this.tail; while (t) { a.push(t); t = t.prev; } return a; }
+  totalDuration() { let s = 0, t = this.head; while (t) { s += t.duration; t = t.next; } return s; }
+}
+
+const playlist = new Playlist();
+
+function fmt(s) { return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); }
+
+function switchOp(op) {
+  document.querySelectorAll('.op-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.form-section').forEach(f => f.classList.remove('active'));
+  document.getElementById('op-' + op).classList.add('active');
+  document.getElementById('form-' + op).classList.add('active');
+}
+
+function renderViz() {
+  const songs = playlist.toArray();
+  document.getElementById('stat-count').textContent = playlist.count;
+  document.getElementById('stat-dur').textContent = fmt(playlist.totalDuration());
+
+  if (playlist.current) {
+    let pos = 1, t = playlist.head;
+    while (t && t !== playlist.current) { t = t.next; pos++; }
+    document.getElementById('stat-pos').textContent = pos + ' / ' + playlist.count;
+    document.getElementById('np-title').textContent = playlist.current.title;
+    document.getElementById('np-artist').textContent = playlist.current.artist + ' · ' + fmt(playlist.current.duration);
+  } else {
+    document.getElementById('stat-pos').textContent = '--';
+    document.getElementById('np-title').textContent = 'No song playing';
+    document.getElementById('np-artist').textContent = 'Add songs to get started';
+  }
+
+  document.getElementById('viz-label').textContent = songs.length ? 'head -> ' + songs[0].title + ' ... ' + songs[songs.length-1].title + ' <- tail' : 'head -> NULL';
+
+  const area = document.getElementById('viz-area');
+  if (!songs.length) {
+    area.innerHTML = '<div class="empty-state"><div class="empty-icon">&#127926;</div><div>Add songs to see the linked list</div></div>';
+    document.getElementById('table-container').innerHTML = '<div style="padding:18px;text-align:center;color:var(--muted);font-size:13px;">No songs yet.</div>';
+    return;
+  }
+
+  let html = '<span class="null-label">NULL</span>';
+  songs.forEach(function(s, i) {
+    const cur = s === playlist.current;
+    html += '<div class="node-wrapper"><div class="arrow"><span class="arrow-line">&#8594;</span><span class="arrow-line">&#8592;</span></div>';
+    html += '<div class="node-card ' + (cur ? 'current' : '') + '" onclick="clickNode(\'' + s.title.replace(/'/g, "\\'") + '\')">';
+    html += '<span class="node-playing-badge">&#9654; NOW</span>';
+    html += '<div class="node-idx">#' + (i+1) + '</div>';
+    html += '<div class="node-title" title="' + s.title + '">' + s.title + '</div>';
+    html += '<div class="node-artist">' + s.artist + '</div>';
+    html += '<div class="node-dur">' + fmt(s.duration) + '</div></div></div>';
+  });
+  html += '<div class="node-wrapper"><div class="arrow"><span class="arrow-line">&#8594;</span><span class="arrow-line">&#8592;</span></div></div><span class="null-label">NULL</span>';
+  area.innerHTML = html;
+
+  let rows = songs.map(function(s, i) {
+    return '<tr class="' + (s === playlist.current ? 'current-row' : '') + '">' +
+      '<td>' + (i+1) + '</td><td><strong>' + s.title + '</strong></td><td>' + s.artist + '</td><td>' + fmt(s.duration) + '</td>' +
+      '<td><button class="play-row-btn" onclick="clickNode(\'' + s.title.replace(/'/g, "\\'") + '\')">&#9654;</button></td></tr>';
+  }).join('');
+
+  document.getElementById('table-container').innerHTML =
+    '<table class="song-table"><thead><tr><th>#</th><th>Title</th><th>Artist</th><th>Duration</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>';
+}
+
+function clickNode(title) {
+  const r = playlist.playSong(title);
+  log(r.ok ? 'success' : 'danger', r.ok ? '&#9654;' : '!', r.msg);
+  renderViz();
+}
+
+function log(type, icon, text) {
+  const list = document.getElementById('log-list');
+  const item = document.createElement('div');
+  item.className = 'log-item ' + type;
+  item.innerHTML = '<span class="log-icon">' + icon + '</span><span class="log-text">' + text + '</span>';
+  list.prepend(item);
+  while (list.children.length > 20) list.removeChild(list.lastChild);
+}
+
+function clearLog() { document.getElementById('log-list').innerHTML = ''; log('info','i','Log cleared.'); }
+
+function addSong() {
+  const title = document.getElementById('add-title').value.trim();
+  const artist = document.getElementById('add-artist').value.trim();
+  const dur = parseInt(document.getElementById('add-dur').value);
+  if (!title)  { log('danger','!','Please enter a song title.'); return; }
+  if (!artist) { log('danger','!','Please enter an artist name.'); return; }
+  if (!dur || dur < 1) { log('danger','!','Please enter a valid duration.'); return; }
+  playlist.addSong(title, artist, dur);
+  log('success', '+', 'Added "' + title + '" by ' + artist + ' (' + fmt(dur) + ') at the TAIL of the linked list.');
+  renderViz();
+  document.getElementById('add-title').value = '';
+  document.getElementById('add-artist').value = '';
+  document.getElementById('add-dur').value = '';
+  document.getElementById('add-title').focus();
+}
+
+function deleteSong() {
+  const title = document.getElementById('del-title').value.trim();
+  if (!title) { log('danger','!','Please enter a title to delete.'); return; }
+  const r = playlist.deleteSong(title);
+  log(r.ok ? 'warning' : 'danger', r.ok ? 'x' : '!', r.msg);
+  renderViz();
+  if (r.ok) document.getElementById('del-title').value = '';
+}
+
+function playNext() { const r = playlist.playNext(); log(r.ok ? 'success' : 'danger', r.ok ? '>>' : '!', r.msg); renderViz(); }
+function playPrev() { const r = playlist.playPrev(); log(r.ok ? 'success' : 'danger', r.ok ? '<<' : '!', r.msg); renderViz(); }
+
+function displayForward() {
+  if (!playlist.count) { log('danger','!','Playlist is empty.'); return; }
+  const s = playlist.toArray().map(function(x,i){ return (i+1)+'. '+x.title+' ('+x.artist+')'; }).join(' -> ');
+  log('info','v','Forward traversal: ' + s);
+}
+
+function displayReverse() {
+  if (!playlist.count) { log('danger','!','Playlist is empty.'); return; }
+  const s = playlist.toArrayReverse().map(function(x,i){ return (i+1)+'. '+x.title+' ('+x.artist+')'; }).join(' -> ');
+  log('info','^','Reverse traversal: ' + s);
+}
+
+function searchSong() {
+  const title = document.getElementById('search-title').value.trim();
+  if (!title) { log('danger','!','Please enter a title to search.'); return; }
+  const r = playlist.searchSong(title);
+  log(r.ok ? 'success' : 'danger', r.ok ? 'O' : '!', r.msg);
+}
+
+function playSpecific() {
+  const title = document.getElementById('play-title').value.trim();
+  if (!title) { log('danger','!','Please enter a title to play.'); return; }
+  const r = playlist.playSong(title);
+  log(r.ok ? 'success' : 'danger', r.ok ? '>' : '!', r.msg);
+  renderViz();
+  if (r.ok) document.getElementById('play-title').value = '';
+}
+
+document.getElementById('add-title').addEventListener('keydown', function(e){ if(e.key==='Enter') document.getElementById('add-artist').focus(); });
+document.getElementById('add-artist').addEventListener('keydown', function(e){ if(e.key==='Enter') document.getElementById('add-dur').focus(); });
+document.getElementById('add-dur').addEventListener('keydown', function(e){ if(e.key==='Enter') addSong(); });
+document.getElementById('del-title').addEventListener('keydown', function(e){ if(e.key==='Enter') deleteSong(); });
+document.getElementById('search-title').addEventListener('keydown', function(e){ if(e.key==='Enter') searchSong(); });
+document.getElementById('play-title').addEventListener('keydown', function(e){ if(e.key==='Enter') playSpecific(); });
+
+renderViz();
+</script>
+</body>
+</html>
